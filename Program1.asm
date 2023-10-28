@@ -1,3 +1,12 @@
+#CS 2640. 04
+#October 28, 2023
+#Vincent Perez, Cathy Ko, Guanlin Chen
+#Program 1: Getting Familiar with Assembly
+#Task 1: Get 2 int values from the user, held in register $s0, $s1, and return the int values to the user
+#Task 2: Using the user input from the register $s0 and $s1, perform arithmetic operations
+#Task 3: Check for conditons: if 2 int values are the same, output "User inputs are the same" 
+#If 2 int values are different, output "User inputs are different"
+
 .data
 	input1: .asciiz "Enter first integer: "
 	input2: .asciiz "Enter second integer: "
