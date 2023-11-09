@@ -7,33 +7,101 @@
 	#invalid input handling (do NOT just print an error message and exit the program; 
 	#re-prompt the user until a correct input is entered)
 
+.data
+    # Define menu and other string data here
+    mainMenu: .asciiz "\n\n\nPlease choose an option: \n 1: Get Letter Grade \n 2: Exit Program \n\n Enter '1' or '2' for your selection: "
+    enterDecimalScore: .asciiz "\n\n Enter a score as an integer value: "
+    exitMenu: .asciiz "\n\n Exiting..."
+    invalidScore: .asciiz "\n\n Invalid input! Please enter a decimal score between 0 and 100. \n\n"
+    A_grade: .asciiz "\n\n Letter Grade: A"
+    B_grade: .asciiz "\n\n Letter Grade: B"
+    C_grade: .asciiz "\n\n Letter Grade: C"
+    D_grade: .asciiz "\n\n Letter Grade: D"
+    F_grade: .asciiz "\n\n Letter Grade: F"
+.text
+.globl main
+
 main:
+    li $v0, 4 # syscall for print string
+    la $a0, mainMenu
+    syscall
 
-li $v0, 5
-syscall
-move $a0, $v0
+    li $v0, 5 # syscall for read int
+    syscall
 
-li $t0, 0
-li $t1, 10
+    move $t0, $v0 # move the input into $t0
 
-loop:
-beq $t0, $t1, exit
+    beq $t0, 1, getLetterGrade # if user chose 1, go to getLetterGrade
+    beq $t0, 2, exit # if user chose 2, go to exit
 
-slti $t2, $a0, 90
-bne $t2, 1, exit
+    j main_loop # otherwise, jump back to main_loop
 
-slti $t3, $a0, 80
-bne $t3, 1, exit
+getLetterGrade:
+    li $v0, 4 # syscall for print string
+    la $a0, enterDecimalScore
+    syscall
 
-slti $t4, $a0, 70
-bne $t4, 1, exit
+    li $v0, 5 # syscall for read int
+    syscall
 
-slti $t5, $a0, 60
-bne $t5, 1, exit
+    move $t1, $v0 # move the input into $t1
 
-slti $t6, $a0, 0
-bne $t6, 1, exit
+    blt $t1, 0, invalid_score # if the score is less than 0, it's invalid
+        bgt $t1, 100, invalid_score # if the score is greater than 100, it's invalid
 
+    bge $t1, 90, print_A_grade # if the score is greater than or equal to 90, it's an A
+    bge $t1, 80, print_B_grade # if the score is greater than or equal to 80, it's a B
+    bge $t1, 70, print_C_grade # if the score is greater than or equal to 70, it's a C
+    bge $t1, 60, print_D_grade # if the score is greater than or equal to 60, it's a D
+
+    # If the score is less than 60, it's an F
+    print_F_grade:
+        li $v0, 4 # syscall for print string
+        la $a0, F_grade
+        syscall
+        j main_loop # jump back to main_loop
+
+    print_D_grade:
+        li $v0, 4 # syscall for print string
+        la $a0, D_grade
+        syscall
+        j main_loop # jump back to main_loop
+
+    print_C_grade:
+        li $v0, 4 # syscall for print string
+        la $a0, C_grade
+        syscall
+        j main_loop # jump back to main_loop
+
+    print_B_grade:
+        li $v0, 4 # syscall for print string
+        la $a0, B_grade
+        syscall
+        j main_loop # jump back to main_loop
+
+    print_A_grade:
+        li $v0, 4 # syscall for print string
+        la $a0, A_grade
+        syscall
+        j main_loop # jump back to main_loop
+
+invalid_score:
+    li $v0, 4 # syscall for print string
+    la $a0, invalidScore
+    syscall
+    j main_loop # jump back to main_loop
+
+exit:
+    li $v0, 4 # syscall for print string
+    la $a0, exitMenu
+    syscall
+
+    li $v0, 10 # syscall for exit
+    syscall
+
+main_loop:
+    j main # jump back to main
+   
 
 
 
