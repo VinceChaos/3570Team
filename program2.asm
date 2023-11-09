@@ -158,6 +158,10 @@ main_loop:
 
 
 
+#CS 2640. 04
+#November 8, 2023
+#Group: Vincent Perez, Cathy Ko, Guanlin Chen
+#Program 2: Practice with Conditionals and Loops
 
 #Task 2: Advanced Math: x to the power of y
 
@@ -171,9 +175,11 @@ main_loop:
     yInput: .asciiz "Enter a number for 'y': "
     output: .asciiz "'x' to the power of 'y' is: "
     newline: .asciiz "\n"
+    
 .text
 
 .globl main
+
 main:
     # Prompt the user to enter x
     li $v0, 4
@@ -197,14 +203,14 @@ main:
 
     # Calculate x to the power of y
     move $t2, $t0 # copy x to t2
-    li $t3, 1 # initialize result to 1
+    li $t3, 1     # initialize result to 1
     
 loopCounter:
         beq $t1, $zero, exit # break if y is 0
-        mult $t2, $t3 # t3 = t2 * t3
-        mflo $t3 # load the result from LO
-        addi $t1, $t1, -1 # decrement y
-        j loopCounter # continue to power loop
+        mult $t2, $t3        # t3 = t2 * t3
+        mflo $t3             # load the result from LO
+        addi $t1, $t1, -1    # decrement y
+        j loopCounter        # continue to power loop
         
 exit:
     # Print the result message
