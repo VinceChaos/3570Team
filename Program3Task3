@@ -4,3 +4,59 @@
 #Program 3: Accessing Memory and File Handling
 
 #Task 3
+
+.data
+    filename:       .asciiz "practiceFile.txt"
+    newString:      .asciiz "very awesome professor! "
+    newline:        .asciiz "\n"   # Newline character
+    buffer:         .space 100       # Buffer for reading/writing
+
+.text
+    main:
+        # Open the file
+        li   $v0, 13            # system call for open file
+        la   $a0, filename      # load address of filename into $a0
+        li   $a1, 9             # open for writing and appending (flags 9)
+        li   $a2, 0             # mode not needed for writing
+        syscall                 # make system call
+
+        # Check if the file is successfully opened
+        bgez $v0, file_opened   # branch if file opened successfully
+
+        # Handle error if file open failed
+        li   $v0, 10            # system call for exit
+        syscall
+
+    file_opened:
+        move $s0, $v0           # save file descriptor
+
+        # Move file pointer to the end of the file
+        li   $v0, 9             # system call for lseek
+        move $a0, $s0           # file descriptor
+        li   $a1, 0             # offset = 0
+        li   $a2, 2             # seek_end
+        syscall
+
+        # Write newline character to the file
+        li   $v0, 15            # system call for write string
+        move $a0, $s0           # file descriptor
+        la   $a1, newline       # load address of newline character
+        li   $a2, 1             # length of the string (1 character)
+        syscall
+
+        # Write the new string to the file
+        li   $v0, 15            # system call for write string
+        move $a0, $s0           # file descriptor
+        la   $a1, newString     # load address of new string
+        li   $a2, 23            # length of the string
+        syscall
+
+        # Close the file
+        li   $v0, 16            # system call for close file
+        move $a0, $s0           # file descriptor
+        syscall
+
+        # Exit the program
+        li   $v0, 10            # system call for exit
+        syscall
+
