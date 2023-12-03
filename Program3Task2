@@ -1,3 +1,10 @@
+#CS 2640. 04
+#Cathy Ko, Vincent Perez, Guanlin Chen
+#December 1, 2023
+#Program 3: Accessing Memory and File Handling
+
+#Task 2
+
 .data
 inputFileName: .asciiz "practiceFile.txt"
 buffer: .space 175
