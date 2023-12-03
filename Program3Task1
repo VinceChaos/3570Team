@@ -47,6 +47,9 @@ loop:
 	move $a0, $t0
 	syscall
 
+
+        #go to letterA with Extracredit if user input is 101 or higher
+	bge,$t0, 101 ExtraCredit
 	#go to letterA if user input is 90 or higher
 	bge $t0, 90, LetterA
 	#go to letterB if user input is 80-89
@@ -58,9 +61,6 @@ loop:
 	#go to letterF if user input is 0-59
 	bge $t0, 0, LetterF
 	
-	#grade is extraCredit if user input is less than 0
-	bgt,$t0, 100 ExtraCredit
-
 
 #extra credit label
 ExtraCredit:
