@@ -49,7 +49,7 @@ loop:
 
 
         #go to letterA with Extracredit if user input is 101 or higher
-	bge,$t0, 101 ExtraCredit
+	bge $t0, 101 ExtraCredit
 	#go to letterA if user input is 90 or higher
 	bge $t0, 90, LetterA
 	#go to letterB if user input is 80-89
