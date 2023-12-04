@@ -5,8 +5,15 @@
 
 #Task 3
 
+.macro newLine
+li $v0, 4
+la $a0, newline
+syscall
+.end_macro
+
 .data
     filename:       .asciiz "practiceFile.txt"
+    prompt:         .asciiz "What have you enjoyed most about the class so far?"
     newString:      .asciiz "very awesome professor! "
     newline:        .asciiz "\n"   # Newline character
     buffer:         .space 100       # Buffer for reading/writing
@@ -43,6 +50,21 @@
         la   $a1, newline       # load address of newline character
         li   $a2, 1             # length of the string (1 character)
         syscall
+        
+        li $v0, 15
+        move $a0, $s0
+        la $a1, prompt
+        li $a2, 50
+        syscall
+        
+        newLine
+        
+        # Write newline character to the file
+        li   $v0, 15            # system call for write string
+        move $a0, $s0           # file descriptor
+        la   $a1, newline       # load address of newline character
+        li   $a2, 1             # length of the string (1 character)
+        syscall
 
         # Write the new string to the file
         li   $v0, 15            # system call for write string
@@ -59,4 +81,3 @@
         # Exit the program
         li   $v0, 10            # system call for exit
         syscall
-
