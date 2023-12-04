@@ -1,0 +1,76 @@
+#CS 2640. 04
+#Cathy Ko, Vincent Perez, Guanlin Chen
+#December 1, 2023
+#Program 3: Accessing Memory and File Handling
+
+#Bonus Task
+
+.macro menu
+      #print prompt
+      li $v0, 4
+      la $a0, prompt
+      syscall
+
+      #read user input into buffer
+      li $v0, 8
+      la $a0, buffer
+      li $a1, 174
+      syscall
+
+      #open 'Test.txt' for writing
+      li $v0, 13
+      la $a0, outputFileName
+      li $a1, 1                #write to file
+      li $a2, 0                #ignored
+      syscall
+      move $s1, $v0
+
+      #write buffer contents to new file
+      #new file name: Test.txt
+      li $v0, 15
+      move $a0, $s1
+      la $a1, buffer
+      li $a2, 174
+      syscall
+      
+      #close Test.txt
+      li $v0, 16
+      move $a0, $s1
+      syscall
+      
+      #print out 'Test.txt' to user
+      li $v0, 4
+      la $a0, complete_message
+      syscall
+
+      # Exit the program
+      li $v0, 10
+      syscall
+.end_macro
+
+
+.data
+outputFileName: .asciiz "Test.txt"
+buffer: .space 175
+error_message: .asciiz "Error creating file.\n"
+prompt: .asciiz "Enter some text: "
+complete_message: .asciiz "\nYour File Has Been Created\n"
+
+.text
+main:
+
+      menu
+
+
+      #exit
+      li $v0, 10
+      syscall
+
+file_creation_error:
+    # Print error message and exit
+    li $v0, 4        # System call code for print string
+    la $a0, error_message
+    syscall          # Perform system call
+
+    li $v0, 10       # System call code for exit
+    syscall          # Perform system call
